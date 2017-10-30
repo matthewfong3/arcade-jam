@@ -1,0 +1,33 @@
+{
+  "name": "project2",
+  "version": "1.0.0",
+  "description": "arcade-jam project 2",
+  "main": "./server/app.js",
+  "scripts": {
+    "test": "echo \"Tests complete\"",
+    "pretest": "eslint ./server --fix",
+    "start": "node ./server/app.js",
+    "nodemon": "nodemon --watch ./server ./server/app.js",
+    "watch": "babel --watch ./client --out-file ./hosted/compiled.js",
+    "build": "babel ./client --out-file ./hosted/compiled.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u001b[2~\u001b[2~\u001b[2~https://github.com/matthewfong3/arcade-jam.git"
+  },
+  "author": "Matthew Fong",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4",
+    "xxhashjs": "^0.2.1"
+  }
+}

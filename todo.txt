@@ -1,0 +1,16 @@
+-4 players (2 red, 2 blue)
+	-positioning each player
+-filling circle colors based on teams
+
+-shooting
+	-3 bullets, then 'reload'
+-shield
+	-unlim shield time?
+collision between shield and bullet (blocking)
+~collision between player and bullet (penalty?)
+-bullet reaching other side of screen +1 point
+3 points to win
+css/art
+documentation
+
+multiple rooms?
