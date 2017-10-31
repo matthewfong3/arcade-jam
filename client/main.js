@@ -20,7 +20,7 @@ const keyDownHandler = (e) => {
     console.log('spacebar pressed: activate shield'); 
     circle.shielding = true;
   }
-  else if(keyPressed === 70 && circle.bullets.length > 0 && !circle.shielding){
+  else if(keyPressed === 70 && circle.bullets.length > 0){
     console.log('f pressed: fire bullet');
     circle.shooting = true;
   }
@@ -51,6 +51,7 @@ const init = () => {
   
   socket.on('joined', setUser);
   socket.on('displayPoints', displayPoints);
+  socket.on('displayWinLose', displayWinLose);
   socket.on('reload', (data) => {
     circles[data.hash].bullets = data.bullets;
   });

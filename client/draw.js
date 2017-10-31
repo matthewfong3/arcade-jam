@@ -7,9 +7,17 @@ const directions = {
 let redPts = 0;
 let bluePts = 0;
 
+let winMsg = '';
+let loseMsg = '';
+
 const displayPoints = (data) => {
   redPts = data.redPts;
   bluePts = data.bluePts;
+};
+
+const displayWinLose = (data) => {
+  winMsg = data.win;
+  loseMsg = data.lose;
 };
 
 const lerp = (v0, v1, alpha) => {
@@ -39,6 +47,22 @@ const redraw = (time) => {
   ctx.fillText("Red Points: " + redPts, 10, canvas.height * 0.04);
   ctx.fillText("Blue Points: " + bluePts, canvas.width * 0.88, canvas.height * 0.04);
   ctx.restore();
+  
+  // display win/lose messages
+  ctx.fillStyle = 'black';
+   if(redPts >= 3){
+     if(circles[hash].x < canvas.width/2){
+       ctx.fillText(winMsg, canvas.width/2, canvas.height/2);
+     } else {
+       ctx.fillText(loseMsg, canvas.width/2, canvas.height/2);
+     }
+   } else if(bluePts >= 3){
+     if(circles[hash].x < canvas.width/2){
+       ctx.fillText(loseMsg, canvas.width/2, canvas.height/2);
+     } else {
+       ctx.fillText(winMsg, canvas.width/2, canvas.height/2);
+     }
+   }
   
   const keys = Object.keys(circles);
   

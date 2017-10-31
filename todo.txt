@@ -9,7 +9,10 @@
 collision between shield and bullet (blocking)
 ~collision between player and bullet (penalty?)
 -bullet reaching other side of screen +1 point
-3 points to win
+-3 points to win
+	-server emits a message with a win and lose property to everyone
+	-clients handle which text to show depending on points and player pos
+restart the game on win (play again button?)
 css/art
 documentation
 

@@ -2,7 +2,7 @@ const xxh = require('xxhashjs');
 const Character = require('./classes/Character.js');
 const Bullet = require('./classes/Bullet.js');
 const Shield = require('./classes/Shield.js');
-// const physics = require('./physics.js');
+const physics = require('./physics.js');
 
 const characters = {};
 
@@ -40,20 +40,27 @@ const setupSockets = (ioServer) => {
     socket.on('updatePoints', (data) => {
       redPoints += data.redPoints;
       bluePoints += data.bluePoints;
+
       io.sockets.in('room1').emit('displayPoints', { redPts: redPoints, bluePts: bluePoints });
+
+      if (redPoints >= 3 || bluePoints >= 3) {
+        io.sockets.in('room1').emit('displayWinLose', { win: 'You Win', lose: 'You Lose' });
+      }
     });
-    
+
     socket.on('reloadRequest', (data) => {
-      for(let i = 0; i < 3; i++){
+      for (let i = 0; i < 3; i++) {
         data.bullets.push(new Bullet());
       }
-      socket.emit('reload', {hash: socket.hash, bullets: data.bullets});
+      socket.emit('reload', { hash: socket.hash, bullets: data.bullets });
     });
-    
+
     socket.on('movementUpdate', (data) => {
       characters[socket.hash] = data;
 
       characters[socket.hash].lastUpdate = new Date().getTime();
+
+      physics.setCharacter(characters[socket.hash]);
 
       io.sockets.in('room1').emit('updatedMovement', characters[socket.hash]);
     });
@@ -62,6 +69,8 @@ const setupSockets = (ioServer) => {
       io.sockets.in('room1').emit('left', characters[socket.hash]);
 
       delete characters[socket.hash];
+
+      physics.setCharacterList(characters);
 
       socket.leave('room1');
     });

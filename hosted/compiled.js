@@ -9,9 +9,17 @@ var directions = {
 var redPts = 0;
 var bluePts = 0;
 
+var winMsg = '';
+var loseMsg = '';
+
 var displayPoints = function displayPoints(data) {
   redPts = data.redPts;
   bluePts = data.bluePts;
+};
+
+var displayWinLose = function displayWinLose(data) {
+  winMsg = data.win;
+  loseMsg = data.lose;
 };
 
 var lerp = function lerp(v0, v1, alpha) {
@@ -41,6 +49,22 @@ var redraw = function redraw(time) {
   ctx.fillText("Red Points: " + redPts, 10, canvas.height * 0.04);
   ctx.fillText("Blue Points: " + bluePts, canvas.width * 0.88, canvas.height * 0.04);
   ctx.restore();
+
+  // display win/lose messages
+  ctx.fillStyle = 'black';
+  if (redPts >= 3) {
+    if (circles[hash].x < canvas.width / 2) {
+      ctx.fillText(winMsg, canvas.width / 2, canvas.height / 2);
+    } else {
+      ctx.fillText(loseMsg, canvas.width / 2, canvas.height / 2);
+    }
+  } else if (bluePts >= 3) {
+    if (circles[hash].x < canvas.width / 2) {
+      ctx.fillText(loseMsg, canvas.width / 2, canvas.height / 2);
+    } else {
+      ctx.fillText(winMsg, canvas.width / 2, canvas.height / 2);
+    }
+  }
 
   var keys = Object.keys(circles);
 
@@ -105,7 +129,7 @@ var keyDownHandler = function keyDownHandler(e) {
     e.preventDefault();
     console.log('spacebar pressed: activate shield');
     circle.shielding = true;
-  } else if (keyPressed === 70 && circle.bullets.length > 0 && !circle.shielding) {
+  } else if (keyPressed === 70 && circle.bullets.length > 0) {
     console.log('f pressed: fire bullet');
     circle.shooting = true;
   }
@@ -131,6 +155,7 @@ var init = function init() {
 
   socket.on('joined', setUser);
   socket.on('displayPoints', displayPoints);
+  socket.on('displayWinLose', displayWinLose);
   socket.on('reload', function (data) {
     circles[data.hash].bullets = data.bullets;
   });
