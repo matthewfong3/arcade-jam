@@ -43,8 +43,8 @@ const update = (data) => {
     circle.moveUp = data.moveUp;
     circle.bullets = data.bullets;
     circle.shield = data.shield;
+    circle.shotsFired = data.shotsFired;
   }
-  circle.shotsFired = data.shotsFired;
 };
 
 // function that handles game over state
