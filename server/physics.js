@@ -30,21 +30,19 @@ const checkBulletsCollision = () => {
       if (bullets[bulletsKeys[i]]) {
         if (bullets[bulletsKeys[i]].direction === 'right' && charList[charKeys[j]].roomMember !== 1 && charList[charKeys[j]].roomMember !== 2 && charList[charKeys[j]].shielding) {
           if (checkCollisions(bullets[bulletsKeys[i]], charList[charKeys[j]].shield)) {
-            sockets.deleteBullet(
-              charList[charKeys[j]].roomNum,
-              bullets[bulletsKeys[i]].roomMember,
-              bullets[bulletsKeys[i]].i,
-            );
+            const rN = charList[charKeys[j]].roomNum;
+            const rM = bullets[bulletsKeys[i]].roomMember;
+            const index = bullets[bulletsKeys[i]].i;
+            sockets.deleteBullet(rN, rM, index);
 
             delete bullets[bulletsKeys[i]];
           }
         } else if (bullets[bulletsKeys[i]].direction === 'left' && charList[charKeys[j]].roomMember !== 3 && charList[charKeys[j]].roomMember !== 4 && charList[charKeys[j]].shielding) {
           if (checkCollisions(bullets[bulletsKeys[i]], charList[charKeys[j]].shield)) {
-            sockets.deleteBullet(
-              charList[charKeys[j]].roomNum,
-              bullets[bulletsKeys[i]].roomMember,
-              bullets[bulletsKeys[i]].i,
-            );
+            const rN = charList[charKeys[j]].roomNum;
+            const rM = bullets[bulletsKeys[i]].roomMember;
+            const index = bullets[bulletsKeys[i]].i;
+            sockets.deleteBullet(rN, rM, index);
 
             delete bullets[bulletsKeys[i]];
           }
