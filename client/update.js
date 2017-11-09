@@ -43,8 +43,13 @@ const update = (data) => {
     circle.moveUp = data.moveUp;
     circle.bullets = data.bullets;
     circle.shield = data.shield;
-    circle.shotsFired = data.shotsFired;
+    circle.shotsFired = data.shotsFired; //updates movements of bullets from other clients
   }
+};
+
+const updateBullets = (data) => {
+  // need to update the length
+  cirlces[data.hash].shotsFired.splice(data.index, 1);
 };
 
 // function that handles game over state

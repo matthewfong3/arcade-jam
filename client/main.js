@@ -141,6 +141,7 @@ const init = () => {
   socket.on('displayPoints', updatePoints);
   socket.on('displayWinLose', updateWinLose);
   socket.on('updatedMovement', update);
+  socket.on('updatedBullets', updateBullets);
   socket.on('reload', reloadBullets);
   socket.on('displayPlayAgain', handleGameOver);
   socket.on('resetPos', resetPosition);

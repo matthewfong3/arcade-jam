@@ -259,6 +259,7 @@ var init = function init() {
   socket.on('displayPoints', updatePoints);
   socket.on('displayWinLose', updateWinLose);
   socket.on('updatedMovement', update);
+  socket.on('updatedBullets', updateBullets);
   socket.on('reload', reloadBullets);
   socket.on('displayPlayAgain', handleGameOver);
   socket.on('resetPos', resetPosition);
@@ -315,8 +316,13 @@ var update = function update(data) {
     circle.moveUp = data.moveUp;
     circle.bullets = data.bullets;
     circle.shield = data.shield;
-    circle.shotsFired = data.shotsFired;
+    circle.shotsFired = data.shotsFired; //updates movements of bullets from other clients
   }
+};
+
+var updateBullets = function updateBullets(data) {
+  // need to update the length
+  cirlces[data.hash].shotsFired.splice(data.index, 1);
 };
 
 // function that handles game over state
