@@ -121,9 +121,9 @@ const updatePosition = () => {
   circle.prevY = circle.y;
   
   if(circle.moveUp && circle.destY > 0 + circle.radius)
-    circle.destY -= 5;
+    circle.destY -= 10;
   if(circle.moveDown && circle.destY < (canvas.height - circle.radius))
-    circle.destY += 5;
+    circle.destY += 10;
   
   if(circle.moveUp)
     circle.direction = directions.UP;
@@ -152,6 +152,15 @@ const updatePosition = () => {
   }
   
   for(let i = 0; i < circle.shotsFired.length; i++){
+    // determines which direction fired projectiles travel in
+    if(circle.roomMember === 1 || circle.roomMember === 2){
+      circle.shotsFired[i].x += 10;
+      circle.shotsFired[i].direction = 'right';
+    } else if(circle.roomMember === 3 || circle.roomMember === 4){
+      circle.shotsFired[i].x -= 10;
+      circle.shotsFired[i].direction = 'left';
+    }
+    
     // determine which team gets a point depending on which side the bullet leaves the canvas
     if(circle.shotsFired[i].x > canvas.width){
       socket.emit('updatePoints',{roomNum: circle.roomNum, redPoints: 1, bluePoints: 0});

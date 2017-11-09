@@ -100,7 +100,7 @@ const setupSockets = (ioServer) => {
       rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].lastUpdate = new Date().getTime();
 
       // determines which direction fired projectiles travel in
-      for (let i = 0; i < rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].shotsFired.length; i++) {
+      /*for (let i = 0; i < rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].shotsFired.length; i++) {
         if (rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].roomMember === 1 || rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].roomMember === 2) {
           rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].shotsFired[i].x += 5;
           rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].shotsFired[i].direction = 'right';
@@ -108,7 +108,7 @@ const setupSockets = (ioServer) => {
           rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].shotsFired[i].x -= 5;
           rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`].shotsFired[i].direction = 'left';
         }
-      }
+      }*/
 
       physics.setCharacter(rooms[`room${data.roomNum}`][`roomMember${data.roomMember}`]);
 
