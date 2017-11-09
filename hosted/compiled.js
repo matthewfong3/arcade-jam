@@ -320,9 +320,9 @@ var update = function update(data) {
   }
 };
 
+// function that removes the bullet from client's bullet array
 var updateBullets = function updateBullets(data) {
-  // need to update the length
-  cirlces[data.hash].shotsFired.splice(data.index, 1);
+  circles[data.hash].shotsFired.splice(data.index, 1);
 };
 
 // function that handles game over state

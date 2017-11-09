@@ -11,7 +11,6 @@ let roomNum = 1;
 
 // helper function that updates client's bullets when collision has been detected
 const deleteBullet = (rN, rM, index) => {
-  // rooms[`room${rN}`][`roomMember${rM}`].shotsFired.splice(index, 1);
   const client = rooms[`room${rN}`][`roomMember${rM}`];
 
   io.sockets.connected[client.id].emit('updatedBullets', { hash: client.hash, index });
