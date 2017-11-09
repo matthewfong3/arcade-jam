@@ -3,32 +3,28 @@
 <head>
     <title>Arcade-Jam</title>
     <meta charset="utf-8"/>
-    <style>
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding:0;
-      }
-      
-      h1 {
-        text-align: center;
-      }
-      
-      canvas {
-        margin: 0 auto;
-        padding: 0;
-        display: block;
-        border: 1px solid black;
-      }
-    </style>
+    <link href="/assets/index.css" type="text/css" rel="stylesheet">
     <script src="/socket.io/socket.io.js"></script>
 	<script src="/assets/compiled.js"> </script>
 </head>
 <body>
     <header>
-      <h1>ARACDE-JAM</h1>
+      <h1>ARCADE-JAM</h1>
     </header>
     <canvas id="canvas" height="648" width="1152">Please use an HTML 5 browser</canvas>
+    <h3>Instructions</h3>
+    <p>Players 1 and 2 are on the red team. Players 3 and 4 are on the blue team.</p>
+    <p>Players can shoot projectiles and if they reach the opposite side of the screens, their team gets a point.</p>
+    <p>The first team to 3 points wins! Players can also block projectiles that the other team fires.</p> 
+    
+    <h3>Controls</h3>
+    <div id="ctrls">
+        W - Move Up <br>
+        S - Move Down <br>
+        F - Fire Projectile <br>
+        Spacebar - Shield
+    </div>
+    <img id="avatar1" class="hidden" src="/assets/images/st1.png" alt="avatar image" />
+    <img id="avatar2" class="hidden" src="/assets/images/st2.png" alt="avatar image" />
 </body>
 </html>

@@ -1,3 +1,27 @@
+let redPts = 0;
+let bluePts = 0;
+
+let winMsg = '';
+let loseMsg = '';
+
+// function that updates client's points variables
+const updatePoints = (data) => {
+  redPts = data.redPts;
+  bluePts = data.bluePts;
+};
+
+// function that updates win/lose msg on game over 
+const updateWinLose = (data) => {
+  winMsg = data.win;
+  loseMsg = data.lose;
+};
+
+// function that updates client's bullets array
+const reloadBullets = (data) => {
+  circles[data.hash].bullets = data.bullets;
+};
+
+// function that updates data for all circles when server sends response
 const update = (data) => {
   if(!circles[data.hash]){
     circles[data.hash] = data;
@@ -8,6 +32,7 @@ const update = (data) => {
     return;
   
   const circle = circles[data.hash];
+  
   if(data.hash === hash){
     circle.destY = data.destY;
   } else {
@@ -17,48 +42,79 @@ const update = (data) => {
     circle.moveDown = data.moveDown;
     circle.moveUp = data.moveUp;
     circle.bullets = data.bullets;
-    circle.shotsFired = data.shotsFired;
     circle.shield = data.shield;
   }
-  
-  circle.alpha = 0.05;
+  circle.shotsFired = data.shotsFired;
 };
 
-const removeUser = (data) => {
-  if(circles[data.hash])
-    delete circles[data.hash];
-};
-
-const setUser = (data) => {
-  if(!circles[data.hash]){
-    hash = data.hash;
-    circles[hash] = data;
+// function that handles game over state
+const handleGameOver = () => {
+  gameOver = true;
+  canvas.addEventListener('click', (e) => {
+    let mousePos = getMousePos(canvas, e);
     
-    // set X positions
-    switch(circles[hash].roomMember){
-      case 1:
-        circles[hash].x = canvas.width * 0.1;
-        break;
-      case 2:
-        circles[hash].x = canvas.width * 0.3;
-        break;
-      case 3:
-        circles[hash].x = canvas.width * 0.7;
-        break;
-      case 4:
-        circles[hash].x = canvas.width * 0.9;
-        break;
+    let gameOverRect = {
+      x: canvas.width/2 - 80,
+      y: canvas.height * 0.75, 
+      width: 160,
+      height: 50
     }
     
-    // set Y positions
-    circles[hash].prevY = canvas.height/2;
-    circles[hash].y = canvas.height/2;
-    circles[hash].destY = canvas.height/2;
-    
-    requestAnimationFrame(redraw);
-  }
+    if(gameOver && isInside(mousePos, gameOverRect)){
+      redPts = 0;
+      bluePts = 0;
+      winMsg = '';
+      loseMsg = '';
+      gameOver = false;
+      socket.emit('restartGame', {});
+    } 
+  });
 };
 
+// function that removes disconnected user from client's circles
+const removeUser = (data) => {
+  if(circles[data.hash]) delete circles[data.hash];
+};
+
+// function that sets up newly connected users client-side
+const setUser = (data) => {
+  onStart = false;
+  hash = data.hash;
+  circles[hash] = data;
+  
+  // set X positions
+  switch(circles[hash].roomMember){
+    case 1:
+      circles[hash].x = canvas.width * 0.1;
+      break;
+    case 2:
+      circles[hash].x = canvas.width * 0.3;
+      break;
+    case 3:
+      circles[hash].x = canvas.width * 0.7;
+      break;
+    case 4:
+      circles[hash].x = canvas.width * 0.9;
+      break;
+  }
+  
+  // set Y positions
+  circles[hash].prevY = canvas.height/2;
+  circles[hash].y = canvas.height/2;
+  circles[hash].destY = canvas.height/2;
+  
+  requestAnimationFrame(redraw);
+};
+
+// function that resets client's position on game's restart
+const resetPosition = () => {
+  // set Y positions 
+  circles[hash].prevY = canvas.height/2;
+  circles[hash].y = canvas.height/2;
+  circles[hash].destY = canvas.height/2;
+};
+
+// function that updates client's movements and sends updated data to server
 const updatePosition = () => {
   const circle = circles[hash];
   
@@ -96,22 +152,15 @@ const updatePosition = () => {
   }
   
   for(let i = 0; i < circle.shotsFired.length; i++){
-    // determine which direction the bullet fires depending on player position
-    if(circle.x < canvas.width/2)
-      circle.shotsFired[i].x += 5;
-    else 
-      circle.shotsFired[i].x -= 5;
-    
     // determine which team gets a point depending on which side the bullet leaves the canvas
     if(circle.shotsFired[i].x > canvas.width){
-      socket.emit('updatePoints',{redPoints: 1, bluePoints: 0});
-      circle.shotsFired.splice(0, 1); 
+      socket.emit('updatePoints',{roomNum: circle.roomNum, redPoints: 1, bluePoints: 0});
+      circle.shotsFired.splice(0, 1);
     } else if(circle.shotsFired[i].x < 0){
-      socket.emit('updatePoints',{redPoints: 0, bluePoints: 1});
+      socket.emit('updatePoints',{roomNum: circle.roomNum, redPoints: 0, bluePoints: 1});
       circle.shotsFired.splice(0, 1); 
     }
   } 
-  
   
   // set shield position to character position
   if(circle.shielding){
@@ -125,8 +174,6 @@ const updatePosition = () => {
     circle.shield.x = circle.x;
     circle.shield.y = circle.y;
   }
-
-  circle.alpha = 0.05;
   
   socket.emit('movementUpdate', circle);
 };
