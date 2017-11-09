@@ -111,6 +111,8 @@ const redraw = (time) => {
     
     // draw bullets fired
     for(let i = 0; i < circle.shotsFired.length; i++){
+      circle.shotsFired[i].x = lerp(circle.shotsFired[i].prevX, circle.shotsFired[i].destX, 0.05);
+      
       ctx.beginPath();
       ctx.arc(circle.shotsFired[i].x, circle.shotsFired[i].y, circle.shotsFired[i].radius, 0, Math.PI * 2, false);
       ctx.closePath();

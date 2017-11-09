@@ -107,6 +107,8 @@ var redraw = function redraw(time) {
 
     // draw bullets fired
     for (var _i = 0; _i < circle.shotsFired.length; _i++) {
+      circle.shotsFired[_i].x = lerp(circle.shotsFired[_i].prevX, circle.shotsFired[_i].destX, 0.05);
+
       ctx.beginPath();
       ctx.arc(circle.shotsFired[_i].x, circle.shotsFired[_i].y, circle.shotsFired[_i].radius, 0, Math.PI * 2, false);
       ctx.closePath();
@@ -403,7 +405,9 @@ var updatePosition = function updatePosition() {
 
   if (circle.bullets.length > 0) {
     if (circle.bullets[0].fired && !circle.shooting) {
+      circle.bullets[0].prevX = circle.x;
       circle.bullets[0].x = circle.x;
+      circle.bullets[0].destX = circle.x;
       circle.bullets[0].y = circle.y;
       circle.shotsFired.push(circle.bullets[0]);
       circle.bullets.splice(0, 1);
@@ -418,12 +422,13 @@ var updatePosition = function updatePosition() {
   }
 
   for (var i = 0; i < circle.shotsFired.length; i++) {
+    circle.shotsFired[i].prevX = circle.shotsFired[i].x;
     // determines which direction fired projectiles travel in
     if (circle.roomMember === 1 || circle.roomMember === 2) {
-      circle.shotsFired[i].x += 10;
+      circle.shotsFired[i].destX += 10;
       circle.shotsFired[i].direction = 'right';
     } else if (circle.roomMember === 3 || circle.roomMember === 4) {
-      circle.shotsFired[i].x -= 10;
+      circle.shotsFired[i].destX -= 10;
       circle.shotsFired[i].direction = 'left';
     }
 
