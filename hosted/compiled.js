@@ -107,7 +107,7 @@ var redraw = function redraw(time) {
 
     // draw bullets fired
     for (var _i = 0; _i < circle.shotsFired.length; _i++) {
-      circle.shotsFired[_i].x = lerp(circle.shotsFired[_i].prevX, circle.shotsFired[_i].destX, 0.05);
+      circle.shotsFired[_i].x = lerp(circle.shotsFired[_i].prevX, circle.shotsFired[_i].destX, 0.5);
 
       ctx.beginPath();
       ctx.arc(circle.shotsFired[_i].x, circle.shotsFired[_i].y, circle.shotsFired[_i].radius, 0, Math.PI * 2, false);
@@ -315,8 +315,8 @@ var update = function update(data) {
     circle.moveUp = data.moveUp;
     circle.bullets = data.bullets;
     circle.shield = data.shield;
-    circle.shotsFired = data.shotsFired;
   }
+  circle.shotsFired = data.shotsFired;
 };
 
 // function that handles game over state
