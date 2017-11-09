@@ -115,7 +115,6 @@ const init = () => {
       if(onStart){
         if(isInside(mousePos, redRect1)){
           roomMember = 1;
-          console.log('in here');
         } 
         else if(isInside(mousePos, redRect2)){
           roomMember = 2;

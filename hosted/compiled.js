@@ -234,7 +234,6 @@ var init = function init() {
       if (onStart) {
         if (isInside(mousePos, redRect1)) {
           roomMember = 1;
-          console.log('in here');
         } else if (isInside(mousePos, redRect2)) {
           roomMember = 2;
         } else if (isInside(mousePos, blueRect3)) {
@@ -391,8 +390,8 @@ var updatePosition = function updatePosition() {
 
   circle.prevY = circle.y;
 
-  if (circle.moveUp && circle.destY > 0 + circle.radius) circle.destY -= 5;
-  if (circle.moveDown && circle.destY < canvas.height - circle.radius) circle.destY += 5;
+  if (circle.moveUp && circle.destY > 0 + circle.radius) circle.destY -= 10;
+  if (circle.moveDown && circle.destY < canvas.height - circle.radius) circle.destY += 10;
 
   if (circle.moveUp) circle.direction = directions.UP;
   if (circle.moveDown) circle.direction = directions.DOWN;
@@ -419,6 +418,15 @@ var updatePosition = function updatePosition() {
   }
 
   for (var i = 0; i < circle.shotsFired.length; i++) {
+    // determines which direction fired projectiles travel in
+    if (circle.roomMember === 1 || circle.roomMember === 2) {
+      circle.shotsFired[i].x += 10;
+      circle.shotsFired[i].direction = 'right';
+    } else if (circle.roomMember === 3 || circle.roomMember === 4) {
+      circle.shotsFired[i].x -= 10;
+      circle.shotsFired[i].direction = 'left';
+    }
+
     // determine which team gets a point depending on which side the bullet leaves the canvas
     if (circle.shotsFired[i].x > canvas.width) {
       socket.emit('updatePoints', { roomNum: circle.roomNum, redPoints: 1, bluePoints: 0 });
