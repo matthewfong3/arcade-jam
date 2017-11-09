@@ -6,8 +6,8 @@ const bullets = {};
 
 // function that checks for sphere-to-sphere collision
 const checkCollisions = (circle1, circle2) => {
-  const dx = (circle1.x - circle2.x) ** 2;
-  const dy = (circle1.y - circle2.y) ** 2;
+  const dx = (circle1.x - circle2.x) * (circle1.x - circle2.x);
+  const dy = (circle1.y - circle2.y) * (circle1.y - circle2.y);
 
   const distance = Math.sqrt(dx + dy);
 
